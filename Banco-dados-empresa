@@ -1,0 +1,94 @@
+CREATE TABLE Departamento 
+(CodDepto number(10),
+constraint Departamento_CodDepto_pk primary key (CodDepto),
+Descricao Varchar2(30) not null
+);
+
+CREATE TABLE Cargo
+(CodCarg number(10),
+constraint Cargo_CodCarg_pk primary key (CodCarg),
+Descricao Varchar(30) not null
+);
+
+CREATE TABLE Funcionario 
+(Matricula number(10),
+constraint Funcionario_Matricula_pk primary key (Matricula),
+Nome Varchar2(45) not null,
+dtNascimento DATE,
+Nacionalidade Varchar2(20) not null,
+Sexo Char(1),
+constraint Funcionario_Sexo_ck check(Sexo in ('F','M')),
+EstadoCivil Varchar2(15) not null,
+RG Number (15) not null,
+Endereco Varchar(30) not null,
+Telefone Number(15) not null,
+DtAdmissao DATE,
+CIC Number(15) not null
+);
+
+CREATE TABLE Dependente 
+(idDependente number(10),
+constraint Dependente_idDependente_pk primary key (idDependente),
+Matricula Number(15),
+constraint Dependente_Matricula_fk foreign key (Matricula) references Funcionario(Matricula),
+Nome Varchar2(45) not null,
+dtNascimento DATE
+);
+
+CREATE TABLE Ocupacao 
+(Matricula number(10),
+constraint Ocupacao_Matricula_fk foreign key (Matricula) references Funcionario(Matricula),
+CodCarg Number(20),
+constraint Ocupacao_CodCarg_fk foreign key (CodCarg) references Cargo(CodCargo),
+dtInicio DATE,
+constraint Ocupacao_dtInicio_pk primary key (dtInicio),
+dtFim DATE
+);
+
+CREATE TABLE Lotacao
+(Matricula number(10),
+constraint Lotacao_Matricula_fk foreign key (Matricula) references Funcionario(Matricula),
+CodDepto Number(20),
+constraint Lotacao_CodDepto_fk foreign key (CodDepto) references Departamento(CodDepto),
+dtInicio DATE,
+constraint Lotacao_dtInicio_pk primary key (dtInicio),
+dtFim DATE
+);
+
+INSERT INTO Departamento VALUES('10','Compras');
+INSERT INTO Departamento VALUES('20','Manufatura');
+INSERT INTO Departamento VALUES('30','TI');
+INSERT INTO Departamento VALUES('40','Financeiro');
+INSERT INTO Departamento VALUES('50','Manutenção');
+
+INSERT INTO Cargo VALUES('986','Gerente Financeiro');
+INSERT INTO Cargo VALUES('777','Analista Manufatura');
+INSERT INTO Cargo VALUES('635','Programador');
+INSERT INTO Cargo VALUES('369','Gerente de TI');
+INSERT INTO Cargo VALUES('111','Encarregado');
+
+INSERT INTO Funcionario VALUES('1010', 'João Aguiar', (TO_DATE('01/12/1970', 'dd/mm/yyyy')), 'Brasileira', 'M', 'Solteiro', '28.740.369-7', 'r. Uru 69', '6794-3764', '10/05/1990', '255.366.987-13');
+INSERT INTO Funcionario VALUES('2935', 'Maria Adan', (TO_DATE('01/10/1960', 'dd/mm/yyyy')), 'Brasileira', 'F', 'Casada', '25.879.361-6', 'r. Caura 78', '7364-8194', '08/01/1985', '255.669.874-10');
+INSERT INTO Funcionario VALUES('6987', 'Juliana Aguirre', (TO_DATE('15/06/1984', 'dd/mm/yyyy')), 'Americana', 'F Solteira', '58.741.698-7', 'r. Aurea 63', '6497-4359', '10/03/2007', '255.699.874-36');
+INSERT INTO Funcionario VALUES('1234', 'Paola Damaris', (TO_DATE('10/08/1988', 'dd/mm/yyyy')), 'Americana', 'F', 'Casada', '36.987.412-5', 'r. Pend 47', '7984-3164', '10/03/2008', '255.366.987-45');
+INSERT INTO Funcionario VALUES('7851', 'Fabio Pepe', (TO_DATE('12/12/1953', 'dd/mm/yyyy')), 'Brasileira', 'M', 'Solteiro', '98.745.365-1', 'r. Leste 36', '3697-8452', '01/06/1978', '111.477.89');
+
+INSERT INTO Dependente VALUES('1', '1010', 'Francisca', (TO_DATE('01/03/1978', 'dd/mm/yyyy')));
+INSERT INTO Dependente VALUES('2', '2935', 'Joana', (TO_DATE('10/08/1984', 'dd/mm/yyyy')));
+INSERT INTO Dependente VALUES('3', '6987', 'Hugo', (TO_DATE('01/09/2009', 'dd/mm/yyyy')));
+INSERT INTO Dependente VALUES('4', '6987', 'Turine', (TO_DATE('10/06/2003', 'dd/mm/yyyy')));
+INSERT INTO Dependente VALUES('5', '1234', 'Augusto', (TO_DATE('30/06/2005', 'dd/mm/yyyy')));
+
+INSERT INTO Ocupacao VALUES('1010', '635', (TO_DATE('10/05/1990', 'dd/mm/yyyy')), (TO_DATE('05/10/2000', 'dd/mm/yyyy')));
+INSERT INTO Ocupacao VALUES('2935', '777', (TO_DATE('08/01/1985', 'dd/mm/yyyy')), NULL);
+INSERT INTO Ocupacao VALUES('6987', '635', (TO_DATE('10/03/2007', 'dd/mm/yyyy')), NULL);
+INSERT INTO Ocupacao VALUES('1234', '635', (TO_DATE('10/03/2008', 'dd/mm/yyyy')) , NULL);
+INSERT INTO Ocupacao VALUES('7851', '111', (TO_DATE('01/06/1978', 'dd/mm/yyyy')), NULL);
+INSERT INTO Ocupacao VALUES('1010', '369', (TO_DATE('05/10/2000', 'dd/mm/yyyy')), NULL);
+
+
+INSERT INTO Lotacao VALUES('1010', '30', (TO_DATE('10/05/1990', 'dd/mm/yyyy')));
+INSERT INTO Lotacao VALUES('2935', '20', (TO_DATE('08/01/1985', 'dd/mm/yyyy')));
+INSERT INTO Lotacao VALUES('6987', '30', (TO_DATE('10/03/2007', 'dd/mm/yyyy')));
+INSERT INTO Lotacao VALUES('1234', '30', (TO_DATE('10/03/2008', 'dd/mm/yyyy')));
+INSERT INTO Lotacao VALUES('7851', '50', (TO_DATE('01/06/1978', 'dd/mm/yyyy')));
